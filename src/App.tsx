@@ -1,18 +1,15 @@
-import { useRef, useEffect } from "react";
-
+import { FC, useRef, useEffect } from "react";
 import "./App.css";
 
-const App = () => {
+const App: FC = () => {
   const boxes = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
     const checkBoxes = () => {
       const triggerBottom = (window.innerHeight / 5) * 4;
-
       boxes.current.forEach((box) => {
         const boxTop = box.getBoundingClientRect().top;
-
-        return boxTop < triggerBottom
+        boxTop < triggerBottom
           ? box.classList.add("show")
           : box.classList.remove("show");
       });
@@ -24,47 +21,24 @@ const App = () => {
     return () => window.removeEventListener("scroll", checkBoxes);
   }, []);
 
+  const renderBox = (index: number) => {
+    return (
+      <div
+        className="box"
+        key={index}
+        ref={(el) => (boxes.current[index] = el as HTMLDivElement)}
+      >
+        <h2>Content</h2>
+      </div>
+    );
+  };
+
   return (
     <>
       <h1>Scroll to see the animation</h1>
-      <div className="box" ref={(el) => (boxes.current[0] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[1] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[2] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[3] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[4] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[5] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[6] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[7] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[8] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[9] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[10] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-      </div>
-      <div className="box" ref={(el) => (boxes.current[11] = el as HTMLDivElement)}>
-        <h2>Content</h2>
-        </div>
-        </>
-  )
-}
+      {Array.from({ length: 12 }, (_, i) => renderBox(i))}
+    </>
+  );
+};
 
-export default App
+export default App;
